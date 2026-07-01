@@ -3,4 +3,4 @@
 //
 // For local development against a local backend, use:
 // const API_BASE_URL = 'http://localhost:5000';
-const API_BASE_URL = 'whatsapp-crm-backend-production-5d63.up.railway.app';
+const API_BASE_URL = 'https://whatsapp-crm-backend-production-5d63.up.railway.app';
