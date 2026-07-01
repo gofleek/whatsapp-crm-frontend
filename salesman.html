@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Salesman · WhatsApp CRM</title>
+<link rel="stylesheet" href="/css/style.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">FS</div>
+      <span>WhatsApp CRM</span>
+    </div>
+    <div class="nav-item active"><span>💬</span><span class="label">My Chats</span></div>
+    <div class="spacer"></div>
+    <div class="user-pill">
+      <div class="avatar" id="avatarInit">--</div>
+      <div class="meta">
+        <div class="name" id="userName">--</div>
+        <div class="role" id="userRole">--</div>
+      </div>
+    </div>
+    <div class="logout-link" onclick="logout()">Log out</div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <h2>My Chats</h2>
+        <div class="topbar-sub">Conversations assigned to you</div>
+      </div>
+      <div style="display:flex; gap:8px;">
+        <button class="btn btn-ghost btn-sm" data-filter="" onclick="setFilter('')">All</button>
+        <button class="btn btn-ghost btn-sm" data-filter="assigned" onclick="setFilter('assigned')">Open</button>
+        <button class="btn btn-ghost btn-sm" data-filter="closed" onclick="setFilter('closed')">Closed</button>
+      </div>
+    </div>
+
+    <div class="content" style="height: calc(100vh - 78px); display:flex;">
+      <div class="chat-shell" style="flex:1;">
+        <div class="chat-list" id="chatList">
+          <div class="empty-list">Loading chats…</div>
+        </div>
+
+        <div class="chat-window" id="chatWindow">
+          <div class="chat-empty-state">
+            <div style="font-size:32px;">💬</div>
+            <div>Select a chat to start replying</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+<script src="/js/config.js"></script>
+<script src="/js/api.js"></script>
+<script src="/js/socket-client.js"></script>
+<script src="/js/salesman.js"></script>
+</body>
+</html>

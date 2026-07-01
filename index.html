@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sign in · WhatsApp CRM</title>
+<link rel="stylesheet" href="/css/style.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="login-screen">
+    <div class="login-card">
+      <div class="brand-mark">FS</div>
+      <h1>Welcome back</h1>
+      <p class="sub">Sign in to your WhatsApp CRM workspace</p>
+
+      <div class="error-msg" id="errorMsg"></div>
+
+      <form id="loginForm">
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="you@company.com" required />
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="••••••••" required />
+        </div>
+        <button type="submit" class="btn btn-primary" id="loginBtn">Sign in</button>
+      </form>
+
+      <div class="demo-hint">
+        Run <code>npm run seed</code> on the backend to create demo accounts:<br/>
+        Admin · <code>admin@futurestack.com</code> / <code>Admin123!</code><br/>
+        Traffic · <code>traffic@futurestack.com</code> / <code>Traffic123!</code><br/>
+        Salesman · <code>sales1@futurestack.com</code> / <code>Sales123!</code>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/config.js"></script>
+  <script src="/js/api.js"></script>
+  <script>
+    // If already logged in, skip straight to the right dashboard
+    (function () {
+      const user = getUser();
+      if (user && getToken()) window.location.href = roleHome(user.role);
+    })();
+
+    const form = document.getElementById('loginForm');
+    const errorMsg = document.getElementById('errorMsg');
+    const loginBtn = document.getElementById('loginBtn');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorMsg.classList.remove('show');
+      loginBtn.disabled = true;
+      loginBtn.textContent = 'Signing in…';
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      try {
+        const res = await fetch(API_BASE_URL + '/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+
+        if (!res.ok || !data.success) {
+          throw new Error(data.message || 'Login failed');
+        }
+
+        setSession(data.token, data.user);
+        window.location.href = roleHome(data.user.role);
+      } catch (err) {
+        errorMsg.textContent = err.message;
+        errorMsg.classList.add('show');
+        loginBtn.disabled = false;
+        loginBtn.textContent = 'Sign in';
+      }
+    });
+  </script>
+</body>
+</html>

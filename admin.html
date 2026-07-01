@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin · WhatsApp CRM</title>
+<link rel="stylesheet" href="/css/style.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">FS</div>
+      <span>WhatsApp CRM</span>
+    </div>
+    <div class="nav-item active"><span>👥</span><span class="label">User Management</span></div>
+    <div class="nav-item" id="navSimulate"><span>📡</span><span class="label">Simulate Webhook</span></div>
+    <div class="spacer"></div>
+    <div class="user-pill">
+      <div class="avatar" id="avatarInit">--</div>
+      <div class="meta">
+        <div class="name" id="userName">--</div>
+        <div class="role" id="userRole">--</div>
+      </div>
+    </div>
+    <div class="logout-link" onclick="logout()">Log out</div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <h2>User Management</h2>
+        <div class="topbar-sub">Create accounts and manage roles &amp; access</div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="stat-grid" id="statGrid"></div>
+
+      <div class="card" style="margin-bottom:22px;">
+        <div class="panel-header" style="padding:16px 16px 0;">
+          <h3>Add a new user</h3>
+        </div>
+        <form class="inline-form" id="createUserForm">
+          <input type="text" id="newName" placeholder="Full name" required />
+          <input type="email" id="newEmail" placeholder="Email address" required />
+          <input type="password" id="newPassword" placeholder="Temporary password" required minlength="6" />
+          <select id="newRole" required>
+            <option value="">Role…</option>
+            <option value="traffic_manager">Traffic Manager</option>
+            <option value="salesman">Salesman</option>
+            <option value="admin">Admin</option>
+          </select>
+          <button type="submit" class="btn btn-primary btn-sm">Create</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Status</th>
+              <th>Created</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="usersTableBody">
+            <tr><td colspan="6" style="text-align:center;color:var(--ink-soft);">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Webhook simulator modal-ish panel -->
+<div id="simPanel" style="display:none; position:fixed; inset:0; background:rgba(11,43,38,0.45); align-items:center; justify-content:center; z-index:60;">
+  <div class="card" style="width:420px; padding:20px;">
+    <div class="panel-header"><h3>Simulate incoming WhatsApp message</h3></div>
+    <p style="font-size:12.5px;color:var(--ink-soft);margin-top:-8px;">
+      Posts to <code>/webhook/whatsapp</code> just like a real WhatsApp provider would. Useful for testing the pipeline end-to-end.
+    </p>
+    <div class="field"><label>Phone number</label><input type="text" id="simPhone" placeholder="+8801XXXXXXXXX" /></div>
+    <div class="field"><label>Customer name (optional)</label><input type="text" id="simName" placeholder="Customer name" /></div>
+    <div class="field"><label>Message</label><input type="text" id="simMessage" placeholder="Hi, I'm interested in..." /></div>
+    <div style="display:flex; gap:10px; margin-top:6px;">
+      <button class="btn btn-ghost" style="flex:1" onclick="document.getElementById('simPanel').style.display='none'">Cancel</button>
+      <button class="btn btn-primary" style="flex:1" onclick="sendSimulatedMessage()">Send</button>
+    </div>
+  </div>
+</div>
+
+<script src="/js/config.js"></script>
+<script src="/js/api.js"></script>
+<script src="/js/admin.js"></script>
+</body>
+</html>
